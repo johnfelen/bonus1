@@ -11,7 +11,21 @@
 // $.html(), $.text(), etc.
 // keyup events could be helpful to get value of field as the user types
 
-(function() {
+(function() 
+{
 	// Magic!
-	console.log('Keepin\'n it clean with an external script!');
+    $.ajax(
+    {
+        url: "http://www.mattbowytz.com/simple_api.json?data=all",
+        success: function( data )
+        {
+            //create arrays from JSON object
+            var interests = data.data.interests;
+            var programming = data.data.programming;
+            $( "#mainForm" ).html( interests[ 0 ] );
+        }
+    });
+
 })();
+
+
