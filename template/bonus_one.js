@@ -32,7 +32,7 @@
                     var currSubstring = string.substring( 0, e );
                     if( currSubstring in hashMap )  //already in map, must keep the other values when adding new value
                     {
-                        hashMap[ currSubstring ] = hashMap[ currSubstring ].concat( string );
+                        hashMap[ currSubstring ] = hashMap[ currSubstring ].concat( "," + string );
                     }
                     
                     else
@@ -50,19 +50,30 @@
         var stringData = $( "#search" ).val();
         console.log( stringData );
         
-        console.log( stringData in hashMap );
-        
         if( stringData in hashMap )
         {
-            $( "#searchBox" ).css( "visibility", "" );  //gets rid of the hidden attribute so that the show and hide function can actually work
+            $( "#searchBox" ).css( "visibility", "" );  //gets rid of the hidden attribute so that the show and hide function can actually work, only need to do the first time
             $( "#searchBox" ).show( function()    //this function will show the box of recommendations
             {
-            
+                $( this ).html(""); 
+                var split = hashMap[ stringData ].split(",");
+                
+                for( var i = 0; i < split.length; i++ )
+                {
+                    var spacing = "<br>";
+                    if( i == split.length - 1 )
+                    {
+                        spacing = "";
+                    }
+                
+                    $( this ).html( $( this ).html().concat( split[ i ] + spacing ) );  //using the for loop allows the outputs to come down one above each other instead of on the same line
+                }
             });
         }
         
         else
         {
+            $( "#searchBox" ).html("");
             $( "#searchBox" ).hide( );
         }
     });
