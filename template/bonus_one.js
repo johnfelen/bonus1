@@ -13,16 +13,36 @@
 
 (function() 
 {
+            $( "#searchBox" ).hide( );
+    var dataArr;
 	// Magic!
     $.ajax(
     {
         url: "http://www.mattbowytz.com/simple_api.json?data=all",
         success: function( data )
         {
-            //create arrays from JSON object
-            var interests = data.data.interests;
-            var programming = data.data.programming;
-            $( "#mainForm" ).html( interests[ 0 ] );
+            dataArr = data.data.interests.concat( data.data.programming );  //create arrays from JSON objects
+        }
+    });
+    
+    //keyup even on the search bar to display the suggestion box
+    $( "#search" ).bind( "keyup", function( keypress )
+    {
+        var stringData = $( "#search" ).val();
+        console.log( stringData );
+        
+        if( dataArr.indexOf( stringData ) > -1 )
+        {
+            $( "#searchBox" ).css( "visibility", "" );  //gets rid of the hidden attribute so that the show and hide function can actually work
+            $( "#searchBox" ).show( function()    //this function will show the box of recommendations
+            {
+            
+            });
+        }
+        
+        else
+        {
+            $( "#searchBox" ).hide( );
         }
     });
 
