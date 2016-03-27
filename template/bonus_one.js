@@ -13,15 +13,34 @@
 
 (function() 
 {
-            $( "#searchBox" ).hide( );
-    var dataArr;
+    var hashMap = new Object();
 	// Magic!
+    //use a hashmap for each level, where the key is the letter and the value is what possible autocompletes are there
     $.ajax(
     {
         url: "http://www.mattbowytz.com/simple_api.json?data=all",
         success: function( data )
         {
-            dataArr = data.data.interests.concat( data.data.programming );  //create arrays from JSON objects
+            var dataArr = data.data.interests.concat( data.data.programming );  //create one array from JSON objects
+            
+            //go thorugh and create a hashmap were the keys are all the prefixes(including the full word) and the values of these prefixes are the full possible words
+            for( var i = 0; i < dataArr.length; i++ )
+            {
+                var string = dataArr[ i ];
+                for( var e = 1; e <= string.length; e++ )
+                {
+                    var currSubstring = string.substring( 0, e );
+                    if( currSubstring in hashMap )  //already in map, must keep the other values when adding new value
+                    {
+                        hashMap[ currSubstring ] = hashMap[ currSubstring ].concat( string );
+                    }
+                    
+                    else
+                    {
+                        hashMap[ currSubstring ] = string;
+                    }
+                }
+            }
         }
     });
     
@@ -31,7 +50,9 @@
         var stringData = $( "#search" ).val();
         console.log( stringData );
         
-        if( dataArr.indexOf( stringData ) > -1 )
+        console.log( stringData in hashMap );
+        
+        if( stringData in hashMap )
         {
             $( "#searchBox" ).css( "visibility", "" );  //gets rid of the hidden attribute so that the show and hide function can actually work
             $( "#searchBox" ).show( function()    //this function will show the box of recommendations
@@ -47,5 +68,3 @@
     });
 
 })();
-
-
