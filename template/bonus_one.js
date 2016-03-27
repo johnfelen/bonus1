@@ -65,8 +65,10 @@
                     {
                         spacing = "";
                     }
-                
-                    $( this ).html( $( this ).html().concat( split[ i ] + spacing ) );  //using the for loop allows the outputs to come down one above each other instead of on the same line
+                    
+                    var link = split[ i ].replace( " ", "+" );  //for google search url extension
+                    $( this ).html( $( this ).html().concat( 
+                    "<a href=\"https://www.google.com/?gws_rd=ssl#q=" + link + "\">" + split[ i ] + "</a>" + spacing ) );  //using the for loop allows the outputs to come down one above each other instead of on the same line
                 }
             });
         }
